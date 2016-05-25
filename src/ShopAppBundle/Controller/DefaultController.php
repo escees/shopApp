@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/hello/{name}")
+     * @Route("/index")
      * @Template()
      */
     public function indexAction($name)
