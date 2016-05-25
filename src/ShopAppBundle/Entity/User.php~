@@ -3,6 +3,7 @@
 namespace ShopAppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="ShopAppBundle\Entity\UserRepository")
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var integer
@@ -20,7 +21,7 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -36,19 +37,6 @@ class User
      */
     private $surname;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255)
-     */
-    private $email;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255)
-     */
-    private $password;
 
     /**
      * @var string
@@ -66,6 +54,7 @@ class User
 
     
     public function __construct() {
+        parent::__construct();
         $this->shopOrders = new ArrayCollection();
     }
     /**
@@ -124,51 +113,6 @@ class User
         return $this->surname;
     }
 
-    /**
-     * Set email
-     *
-     * @param string $email
-     * @return User
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string 
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
 
     /**
      * Set address
@@ -191,5 +135,38 @@ class User
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * Add shopOrders
+     *
+     * @param \ShopAppBundle\Entity\ShopOrder $shopOrders
+     * @return User
+     */
+    public function addShopOrder(\ShopAppBundle\Entity\ShopOrder $shopOrders)
+    {
+        $this->shopOrders[] = $shopOrders;
+
+        return $this;
+    }
+
+    /**
+     * Remove shopOrders
+     *
+     * @param \ShopAppBundle\Entity\ShopOrder $shopOrders
+     */
+    public function removeShopOrder(\ShopAppBundle\Entity\ShopOrder $shopOrders)
+    {
+        $this->shopOrders->removeElement($shopOrders);
+    }
+
+    /**
+     * Get shopOrders
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getShopOrders()
+    {
+        return $this->shopOrders;
     }
 }
