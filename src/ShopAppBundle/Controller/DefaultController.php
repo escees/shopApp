@@ -12,14 +12,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/index")
-     * @Template()
-     */
-    public function indexAction($name)
-    {
-        return array('name' => $name);
-    }
     
     /**
      * @Route("/index", name="index")
