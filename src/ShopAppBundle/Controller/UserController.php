@@ -244,4 +244,55 @@ class UserController extends Controller
             ->getForm()
         ;
     }
+    
+    /**
+     * @Route("/new/admin")
+     * @Method("GET")
+     * @Template()
+     */
+    public function newAdminAction() {
+
+        return [];
+    }
+
+    /**
+     * @Route("/new/admin")
+     * @Method ("POST")
+     * @Template("ShopAppBundle:User:newAdmin.html.twig")
+     */
+    public function createAdminAction(Request $req) {
+        $userManager = $this->get('fos_user.user_manager');
+        $admin = $userManager->createUser();
+
+        $code = $this->getParameter('admin_create_access_code');
+        $userCode = $req->request->get('code');
+        $username = $req->request->get('login');
+        $password = $req->request->get('pass');
+        $email = $req->request->get('mail');
+
+
+        if ($userCode != $code) {
+            return new Response('Access denied!');
+        }
+        if ($userManager->findUserByUsername($username)){
+            return new Response('This username already exists');
+        }
+        if ($userManager->findUserByEmail($email)){
+            return new Response('This email already exists');
+        }
+            
+        $admin->setUsername($username);
+        $admin->setEmail($email);
+        $admin->setPlainPassword($password);
+        $admin->setEnabled(true);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($admin);
+        $em->flush();
+
+
+        return [
+            'admin' => $admin
+        ];
+    }
 }
