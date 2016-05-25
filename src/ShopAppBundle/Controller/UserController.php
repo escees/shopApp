@@ -76,7 +76,7 @@ class UserController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Utwórz użytkownika'));
 
         return $form;
     }
@@ -165,7 +165,7 @@ class UserController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Zapisz'));
 
         return $form;
     }
@@ -183,7 +183,7 @@ class UserController extends Controller
         $entity = $em->getRepository('ShopAppBundle:User')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Nie znaleziono użytkownika');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -240,7 +240,7 @@ class UserController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('user_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Usuń użytkownika'))
             ->getForm()
         ;
     }
