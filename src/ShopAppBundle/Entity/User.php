@@ -3,6 +3,7 @@
 namespace ShopAppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="ShopAppBundle\Entity\UserRepository")
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var integer
@@ -20,7 +21,7 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -66,6 +67,7 @@ class User
 
     
     public function __construct() {
+        parent::__construct();
         $this->shopOrders = new ArrayCollection();
     }
     /**
