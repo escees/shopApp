@@ -109,7 +109,7 @@ class ShopOrderController extends Controller
     /**
      * Finds and displays a ShopOrder entity.
      *
-     * @Route("/", name="shoporder_show")
+     * @Route("/show", name="shoporder_show")
      * @Method("GET")
      * @Template()
      */
@@ -120,7 +120,7 @@ class ShopOrderController extends Controller
 
         $entity = $em->getRepository('ShopAppBundle:ShopOrder')->findByUser($this->getUser());
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($this->getUser());
 
         return array(
             'entity'      => $entity,
