@@ -15,8 +15,25 @@ use ShopAppBundle\Form\PhotoType;
  *
  * @Route("/photo")
  */
-class PhotoController extends Controller
-{
+class PhotoController extends Controller {
+
+    private function fileHandle($file, $photo) {
+        $dir = $this->container->getParameter('kernel.root_dir') . '/../web/uploads/';
+
+        if (!$file)
+            return;
+
+        $fileName = $photo->getPath();
+
+        if (!empty($fileName) && file_exists($dir . $fileName)) {
+            unlink($dir . $fileName);
+        }
+        $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+        $file->move($dir, $fileName);
+
+
+        $photo->setPath($fileName);
+    }
 
     /**
      * Lists all Photo entities.
@@ -25,8 +42,7 @@ class PhotoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('ShopAppBundle:Photo')->findAll();
@@ -35,6 +51,8 @@ class PhotoController extends Controller
             'entities' => $entities,
         );
     }
+
+    
     /**
      * Creates a new Photo entity.
      *
@@ -42,24 +60,25 @@ class PhotoController extends Controller
      * @Method("POST")
      * @Template("ShopAppBundle:Photo:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Photo();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted()) {
+            $image = $form->get('path')->getData();
+
+            $this->fileHandle($image, $entity);
+           
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('photo_show', array('id' => $entity->getId())));
         }
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+
+        return [
+            'form' => $form->createView()
+        ];
     }
 
     /**
@@ -69,8 +88,7 @@ class PhotoController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Photo $entity)
-    {
+    private function createCreateForm(Photo $entity) {
         $form = $this->createForm(new PhotoType(), $entity, array(
             'action' => $this->generateUrl('photo_create'),
             'method' => 'POST',
@@ -88,14 +106,13 @@ class PhotoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new Photo();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -106,8 +123,7 @@ class PhotoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('ShopAppBundle:Photo')->find($id);
@@ -119,7 +135,7 @@ class PhotoController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -131,8 +147,7 @@ class PhotoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('ShopAppBundle:Photo')->find($id);
@@ -145,21 +160,20 @@ class PhotoController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Photo entity.
-    *
-    * @param Photo $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Photo $entity)
-    {
+     * Creates a form to edit a Photo entity.
+     *
+     * @param Photo $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Photo $entity) {
         $form = $this->createForm(new PhotoType(), $entity, array(
             'action' => $this->generateUrl('photo_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -169,6 +183,7 @@ class PhotoController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Photo entity.
      *
@@ -176,8 +191,7 @@ class PhotoController extends Controller
      * @Method("PUT")
      * @Template("ShopAppBundle:Photo:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('ShopAppBundle:Photo')->find($id);
@@ -197,19 +211,19 @@ class PhotoController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Photo entity.
      *
      * @Route("/{id}", name="photo_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -235,13 +249,13 @@ class PhotoController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('photo_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->setAction($this->generateUrl('photo_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
+
 }

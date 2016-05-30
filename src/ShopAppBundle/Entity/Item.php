@@ -60,6 +60,10 @@ class Item
         $this->shopOrders = new ArrayCollection();
         $this->photos = new ArrayCollection();
     }
+    
+    public function __toString() {
+        return $this->name;
+    }
 
 
     /**

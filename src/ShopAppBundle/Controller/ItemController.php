@@ -116,11 +116,11 @@ class ItemController extends Controller
             throw $this->createNotFoundException('Unable to find Item entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+//        $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'entity'      => $entity
+//            'delete_form' => $deleteForm->createView(),
         );
     }
 
