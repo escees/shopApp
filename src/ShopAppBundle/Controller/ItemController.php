@@ -111,7 +111,8 @@ class ItemController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('ShopAppBundle:Item')->find($id);
-
+        $photos = $entity->getPhotos();
+        
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Item entity.');
         }
@@ -119,7 +120,8 @@ class ItemController extends Controller
 //        $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity
+            'entity'      => $entity,
+            'photos'      => $photos
 //            'delete_form' => $deleteForm->createView(),
         );
     }

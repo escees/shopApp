@@ -15,7 +15,7 @@ class PhotoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('path', 'file', ['label' => 'Twoje zdjęcie'])
+            ->add('path', 'file', ['label' => 'Zdjęcie przedmiotu'])
             ->add('item', 'entity', [
                 'label' => 'Przedmiot',
                 'class' => 'ShopAppBundle:Item',
