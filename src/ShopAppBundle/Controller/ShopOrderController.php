@@ -17,7 +17,11 @@ use ShopAppBundle\Form\ShopOrderType;
  */
 class ShopOrderController extends Controller
 {
-
+    
+    private function getUId(){
+        return $this->getUser() ? $this->getUser()->getId() : 0;
+    }
+    
     /**
      * Lists all ShopOrder entities.
      *
@@ -102,19 +106,21 @@ class ShopOrderController extends Controller
     /**
      * Finds and displays a ShopOrder entity.
      *
-     * @Route("/{id}", name="shoporder_show")
+     * @Route("/", name="shoporder_show")
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction()
     {
+        $id = $this->getUId();
+        
+        if ($id == 0){
+            return $this->redirectToRoute('index');
+        }
+        
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('ShopAppBundle:ShopOrder')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find ShopOrder entity.');
-        }
 
         $deleteForm = $this->createDeleteForm($id);
 
