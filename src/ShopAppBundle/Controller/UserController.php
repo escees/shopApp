@@ -139,14 +139,19 @@ class UserController extends Controller{
     /**
      * Displays a form to edit an existing User entity.
      *
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/edit", name="user_edit")
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
+    public function editAction()
     {
+        $id = $this->getUId();
+        
+        if ($id == 0){
+            return $this->redirectToRoute('index');
+        }
+        
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('ShopAppBundle:User')->find($id);
 
         if (!$entity) {
@@ -184,14 +189,19 @@ class UserController extends Controller{
     /**
      * Edits an existing User entity.
      *
-     * @Route("/{id}", name="user_update")
+     * @Route("/", name="user_update")
      * @Method("PUT")
      * @Template("ShopAppBundle:User:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request)
     {
+        $id = $this->getUId();
+        
+        if ($id == 0){
+            return $this->redirectToRoute('index');
+        }
+        
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('ShopAppBundle:User')->find($id);
 
         if (!$entity) {
@@ -217,11 +227,17 @@ class UserController extends Controller{
     /**
      * Deletes a User entity.
      *
-     * @Route("/{id}", name="user_delete")
+     * @Route("/", name="user_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request)
     {
+        $id = $this->getUId();
+        
+        if ($id == 0){
+            return $this->redirectToRoute('index');
+        }
+        
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 

@@ -32,8 +32,13 @@
         </a>
     </li>
     <li>
-        <a href="{{ path('user_edit', { 'id': entity.id }) }}">
+        <a href="{{ path('user_edit')}}">
             Edytuj dane
+        </a>
+    </li><br>
+    <li>
+        <a href="{{ path('shoporder_show') }}">
+            Moje zamówienia
         </a>
     </li><br>
     {{ form(delete_form) }}
