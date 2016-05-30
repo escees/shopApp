@@ -9,6 +9,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use ShopAppBundle\Entity\ShopOrder;
 use ShopAppBundle\Form\ShopOrderType;
+use ShopAppBundle\Entity\User;
+
+
 
 /**
  * ShopOrder controller.
@@ -112,15 +115,10 @@ class ShopOrderController extends Controller
      */
     public function showAction()
     {
-        $id = $this->getUId();
-        
-        if ($id == 0){
-            return $this->redirectToRoute('index');
-        }
         
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('ShopAppBundle:ShopOrder')->find($id);
+        $entity = $em->getRepository('ShopAppBundle:ShopOrder')->findByUser($this->getUser());
 
         $deleteForm = $this->createDeleteForm($id);
 
