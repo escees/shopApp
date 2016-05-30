@@ -18,7 +18,7 @@ class UserType extends AbstractType
             ->add('username', 'text', ['label' => 'Login:'])
             ->add('name', 'text', ['label' => 'Imię:'])
             ->add('surname', 'text', ['label' => 'Nazwisko:'])
-            ->add('email', 'text', ['label' => 'Adres E-mail:'])
+            ->add('email', 'email', ['label' => 'Adres E-mail:'])
             ->add('plainPassword', 'password', ['label' => 'Hasło:'])
             ->add('address', 'text', ['label' => 'Pełny adres:'])
         ;

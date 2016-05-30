@@ -15,9 +15,11 @@ use ShopAppBundle\Form\UserType;
  *
  * @Route("/user")
  */
-class UserController extends Controller
-{
-
+class UserController extends Controller{
+    
+    private function getUId(){
+        return $this->getUser() ? $this->getUser()->getId() : 0;
+    }
     /**
      * Lists all User entities.
      *
@@ -45,9 +47,10 @@ class UserController extends Controller
     public function createAction(Request $request)
     {
         $entity = new User();
+        $entity->setEnabled(true);
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
+        
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
@@ -102,22 +105,31 @@ class UserController extends Controller
     /**
      * Finds and displays a User entity.
      *
-     * @Route("/{id}", name="user_show")
+     * @Route("/show", name="user_show")
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('ShopAppBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+    public function showAction(){
+        
+        $id = $this->getUId();
+        
+        if ($id == 0){
+            return $this->redirectToRoute('index');
         }
-
+        
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('ShopAppBundle:User')->find($id);
+        
+//        $loggedUser = $this->getUser();
+//        if(!$loggedUser){
+//            return new Response ('Nie jesteś zalogowany.');
+//        }
+//        if (!$entity) {
+//            throw $this->createNotFoundException('Taki użytkownik nie istnieje!');
+//        }
+        
         $deleteForm = $this->createDeleteForm($id);
-
+        
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
