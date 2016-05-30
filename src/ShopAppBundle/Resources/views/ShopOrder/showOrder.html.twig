@@ -1,20 +1,27 @@
 {% extends '::base.html.twig' %}
 {#{{ dump(entity) }}#}
 {% block body -%}
-    <h1>Zamówienia</h1>
+    <h1>Zamówienie</h1>
     {% if entity is not defined %}
         Brak zamówień!
         {% endif %}
     <table class="record_properties">
-        {% for order in entity %}
+        
         <tbody>
             <tr>
                 <th>Numer zamówienia</th>
-                <td><a href="{{ path ('shoporder_showorder', {'id': order.id}) }}">{{ order.id }}</a></td>
+                <td>{{ entity.id }}</td>
             </tr>
-            
+            <tr>
+                <th>Status</th>
+                <td>{{ entity.status }}</td>
+            </tr>
+            <tr>
+                <th>Ilość</th>
+                <td>{{ entity.quantity }}</td>
+            </tr>
         </tbody>
-        {% endfor %}
+        
     </table>
 
         <ul class="record_actions">

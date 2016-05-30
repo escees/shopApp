@@ -127,6 +127,27 @@ class ShopOrderController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+    /**
+     * Finds and displays a ShopOrder entity.
+     *
+     * @Route("/showorder/{id}", name="shoporder_showorder")
+     * @Method("GET")
+     * @Template()
+     */
+    public function showOrderAction($id)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('ShopAppBundle:ShopOrder')->find($id);
+
+        
+
+        return array(
+            'entity'      => $entity
+            
+        );
+    }
 
     /**
      * Displays a form to edit an existing ShopOrder entity.
