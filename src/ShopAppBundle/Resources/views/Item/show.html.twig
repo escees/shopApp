@@ -43,8 +43,15 @@
                 <a data-slide-index="{{loop.index0}}" href="" style="background-image: url('/uploads/{{ photo.path }}')"> </a>
                 {% endfor %}
         </div>
+        
+        
 
         <ul class="record_actions">
+            <li>
+                <a href="{{ path('add_to_basket', { 'id':entity.id}) }}">
+                    Dodaj do koszyka
+                </a>
+            </li>
             <li>
                 <a href="{{ path('item') }}">
                     Back to the list

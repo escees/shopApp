@@ -13,6 +13,13 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class ShopOrder
 {
+    
+    const STATUS_BASKET = 1;
+    const STATUS_ACCEPTED = 2;
+    const STATUS_PAID = 3;
+    const STATUS_SENT = 4;
+    const STATUS_COMPLETED = 5;
+    
     /**
      * @var integer
      *
@@ -29,12 +36,6 @@ class ShopOrder
      */
     private $status;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="quantity", type="integer")
-     */
-    private $quantity;
     /**
      *
      * @var type 
@@ -85,29 +86,7 @@ class ShopOrder
         return $this->status;
     }
 
-    /**
-     * Set quantity
-     *
-     * @param integer $quantity
-     * @return ShopOrder
-     */
-    public function setQuantity($quantity)
-    {
-        $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    /**
-     * Get quantity
-     *
-     * @return integer 
-     */
-    public function getQuantity()
-    {
-        return $this->quantity;
-    }
-
+    
     /**
      * Set user
      *

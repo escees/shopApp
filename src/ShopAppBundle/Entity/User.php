@@ -51,6 +51,13 @@ class User extends BaseUser
      * 
      */
     private $shopOrders;
+    
+    /**
+     * @var string
+     * @ORM\OneToOne(targetEntity="ShopOrder")
+     * @ORM\JoinColumn(name="shopOrder_id", referencedColumnName="id")
+     */
+    private $currentBasket;
 
     
     public function __construct() {
@@ -168,5 +175,29 @@ class User extends BaseUser
     public function getShopOrders()
     {
         return $this->shopOrders;
+    }
+
+    /**
+     * Set currentBasket
+     *
+     * @param \ShopAppBundle\Entity\ShopOrder $currentBasket
+     *
+     * @return User
+     */
+    public function setCurrentBasket(\ShopAppBundle\Entity\ShopOrder $currentBasket = null)
+    {
+        $this->currentBasket = $currentBasket;
+
+        return $this;
+    }
+
+    /**
+     * Get currentBasket
+     *
+     * @return \ShopAppBundle\Entity\ShopOrder
+     */
+    public function getCurrentBasket()
+    {
+        return $this->currentBasket;
     }
 }
