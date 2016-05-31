@@ -54,4 +54,25 @@ class ShopController extends Controller {
         
     }
     
+    /**
+     * @Route("/showBasket", name="show_basket")
+     * @Template()
+     */
+    public function showBasketAction() {
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $user= $this->getUser();        
+        if (!$user) {
+            return new Response('Zaloguj się');
+        }
+        
+        $basket = $user->getCurrentBasket();
+        $items = $basket->getItems();
+        
+        return [
+            'items'=>$items
+        ];
+    }
+    
 }
