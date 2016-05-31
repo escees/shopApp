@@ -53,6 +53,9 @@ class ShopOrder
     public function __construct() {
         $this->items = new ArrayCollection();
     }
+    public function __toString() {
+        return $this->id = '';
+    }
     /**
      * Get id
      *
