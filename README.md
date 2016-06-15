@@ -1,4 +1,4 @@
-projektTest
+Shop Application - in progress
 ===========
 
-A Symfony project created on May 25, 2016, 11:26 am.
+Created with Symfony2
